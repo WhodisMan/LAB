@@ -1,0 +1,163 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *link;
+};
+
+
+
+void display(struct node **head){
+
+    printf("[");
+    struct node *ptr = (*head);
+    if ((*head) == NULL){
+        printf("Empty List ");
+    }
+    else{
+        while(ptr != NULL){
+            printf("%d,",ptr -> data);
+            ptr = ptr -> link;
+        }
+    }
+    printf("\b]\n");
+}
+
+void insertF(struct node **head,int val){
+    struct node *temp = (struct node *)malloc(sizeof(struct node));
+    
+    temp -> data = val;
+    temp -> link = (*head);
+    (*head) = temp;
+}
+
+
+void insertE(struct node **head,int val){
+    struct node *ptr = (*head);
+    struct node *temp = (struct node *)malloc(sizeof(struct node));
+
+    temp -> data = val;
+    temp -> link = NULL;
+    if ((*head) == NULL){
+        (*head) = temp;
+    }
+    else{
+        while( ptr -> link != NULL){
+            ptr = ptr -> link;
+        }
+        ptr -> link = temp;
+    }
+}
+
+void insertA(struct node **head,int val,int pos){
+    struct node* temp = (struct node *)malloc(sizeof(struct node));
+    struct node *prev;
+    temp -> data =val;
+    struct node *ptr = (*head);
+    
+    while(ptr != NULL && ptr -> data != pos){
+         struct node *prev = ptr;
+         ptr = ptr -> link;
+    }
+
+    if (ptr == NULL){
+        printf("Element not found\n");
+    }
+    else{
+        prev -> link = temp;
+        temp -> link = ptr;
+    }
+}
+
+void deleteF(struct node **head){
+    if ((*head) == NULL){
+        printf("Empty List\n");
+    }
+    else{
+        struct node *ptr = (*head);
+        (*head) = ptr -> link;
+        free(ptr);
+    }
+}
+
+void deleteE(struct node **head){
+    struct node * prev;
+    if ((*head) == NULL){
+        printf("Empty List\n");
+    }
+    else if((*head) -> link == NULL){
+        free((*head));
+        (*head) = NULL;
+    }
+    else{
+        struct node *ptr = (*head);
+        while( ptr -> link != NULL){
+            prev = ptr;
+            ptr = ptr -> link;
+        }
+        prev -> link = NULL;
+        free(ptr);
+    }
+}
+
+void deleteA(struct node **head,int pos){
+    struct node* prev;
+    if ((*head) == NULL){
+        printf("Empty List\n");
+    }
+    else{
+        struct node *ptr = (*head);
+        
+        while(ptr != NULL && ptr -> data != pos){
+            prev = ptr;
+            ptr = ptr -> link;
+        }
+        if (ptr == NULL){
+            printf("Element Not Found\n");
+        }
+        else{
+            if ((*head) -> data == pos){
+                deleteF(&(*head));
+            }
+            else{
+                prev -> link = ptr -> link;
+                free(ptr);
+            }
+        }
+    }
+}
+
+void merge(struct node **h1, struct node **h2){
+
+    struct node *p1 =(*h1), *p2 = (*h2);
+
+    while(p1 -> link != NULL)
+        p1 = p1 -> link;
+    p1 -> link = (*h2);
+}
+
+
+
+int get(){
+    int num;
+    printf("Enter Element : ");
+    scanf("%d",&num);
+    return num;
+}
+
+void main(){
+    struct node* list1 = NULL, *list2 = NULL;
+    
+    insertE(&list1,1);
+    insertE(&list1,2);
+    insertE(&list1,3);
+    insertE(&list1,4);
+    insertE(&list2,5);
+    insertE(&list2,6);
+    insertE(&list2,7);
+    insertE(&list2,8);
+
+    merge(&list1,list2);
+}
