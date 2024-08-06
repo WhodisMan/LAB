@@ -1,0 +1,14 @@
+#include<stdio.h>
+
+void main(){
+    int num1, num2, ans;
+    prinf("Enter num1 : ");
+    scanf("%d",&num1);
+    prinf("Enter num2 : ");
+    scanf("%d",&num2);
+
+    ans = num1 + num2;
+
+    prinf("%d + %d = %d\n"num1,num2,ans);
+
+}
