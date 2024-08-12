@@ -1,0 +1,10 @@
+ void main(){
+
+    int num1 = 6;
+    int num2 = 7;
+    
+    ans = num1 + num2 ;
+
+    printf("%d + %d = %d\n"num1,num2,ans);
+
+}
