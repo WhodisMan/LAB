@@ -1,125 +1,73 @@
-//Including Libraries
 #include<stdio.h>
-#include<stdlib.h>
+#include<conio.h>
 #include<string.h>
 
-//Global Variables
-int z = 0, i = 0, j = 0, c = 0;
+int k=0,z=0,i=0,j=0,len=0;
+char str1[20],str2[20],str3[15],act[10];
+void check();
+void main()
+   {
+      printf("GRAMMAR is E -> E+E\nE -> E*E\nE -> (E)\nE -> E-E\nE -> E/E\nE -> i\n");
+      printf("Enter input string : ");
+      scanf("%s",str1);
 
-// Modify array size to increase 
-// length of string to be parsed
-char a[16], ac[20], stk[15], act[10]; 
+      len = strlen(str1);
 
-// This Function will check whether
-// the stack contain a production rule 
-// which is to be Reduce.
-// Rules can be E->2E2 , E->3E3 , E->4
+
+      printf("STACK \t INPUT \t ACTION\n");
+	  printf("$ \t %s$\t \n",str1);
+
+      for(i=0; j<len; i++,j++){
+         if(str1[j]=='i'){
+              str3[i]=str1[j];
+              str1[j]=' ';
+              printf("$%s\t%s$\tSHIFT -> i\n",str3,str1);
+              check();
+           }
+         else{
+              str3[i]=str1[j];
+              str3[i+1]='\0';
+              str1[j]=' ';
+              printf("$%s\t%s$\tSHIFT -> %c\n",str3,str1,str3[i]);
+              check();
+           }
+       }
+	   if (strcmp(str3,"E") == 0){
+		printf("String accepted\n");
+	   }
+	   else{
+		printf("String not accepted\n");
+	   }
+
+   }
 void check()
-{
-	// Copying string to be printed as action
-	strcpy(ac,"REDUCE TO E -> "); 
-	
-	// c=length of input string
-	for(z = 0; z < c; z++) 
-	{
-		//checking for producing rule E->4
-		if(stk[z] == '4') 
-		{
-			printf("%s4", ac);
-			stk[z] = 'E';
-			stk[z + 1] = '\0';
-			
-			//printing action
-			printf("\n$%s\t%s$\t", stk, a); 
-		}
-	}
-		
-	for(z = 0; z < c - 2; z++)
-	{
-		//checking for another production
-		if(stk[z] == '2' && stk[z + 1] == 'E' && 
-								stk[z + 2] == '2') 
-		{
-			printf("%s2E2", ac);
-			stk[z] = 'E';
-			stk[z + 1] = '\0';
-			stk[z + 2] = '\0';
-			printf("\n$%s\t%s$\t", stk, a);
-			i = i - 2;
-		}
-		
-	}
-		
-	for(z=0; z<c-2; z++)
-	{
-		//checking for E->3E3
-		if(stk[z] == '3' && stk[z + 1] == 'E' && 
-								stk[z + 2] == '3') 
-		{
-			printf("%s3E3", ac);
-			stk[z]='E';
-			stk[z + 1]='\0';
-			stk[z + 1]='\0';
-			printf("\n$%s\t%s$\t", stk, a);
-			i = i - 2;
-		}
-	}
-	return ; //return to main
-}
-
-//Driver Function
-int main()
-{
-	printf("GRAMMAR is -\nE->2E2 \nE->3E3 \nE->4\n"); 
-	
-	// a is input string
-	strcpy(a,"32423"); 
-	
-	// strlen(a) will return the length of a to c
-	c=strlen(a); 
-	
-	// "SHIFT" is copied to act to be printed
-	strcpy(act,"SHIFT"); 
-	
-	// This will print Labels (column name)
-	printf("\nstack \t input \t action"); 
-	
-	// This will print the initial 
-	// values of stack and input
-	printf("\n$\t%s$\t", a); 
-	
-	// This will Run upto length of input string
-	for(i = 0; j < c; i++, j++) 
-	{
-		// Printing action
-		printf("%s", act); 
-		
-		// Pushing into stack
-		stk[i] = a[j];	 
-		stk[i + 1] = '\0';
-		
-		// Moving the pointer
-		a[j]=' ';
-		
-		// Printing action
-		printf("\n$%s\t%s$\t", stk, a); 
-		
-		// Call check function ..which will 
-		// check the stack whether its contain
-		// any production or not
-		check(); 
-	}
-	
-	// Rechecking last time if contain
-	// any valid production then it will
-	// replace otherwise invalid
-	check(); 
-	
-	// if top of the stack is E(starting symbol)
-	// then it will accept the input
-	if(stk[0] == 'E' && stk[1] == '\0') 
-		printf("Accept\n");
-	else //else reject
-		printf("Reject\n");
-}
-// This code is contributed by Ritesh Aggarwal
+   {
+     for(z=j; z<len; z++){
+       if(str3[z]=='i')
+         {
+           str3[z]='E';
+           printf("$%s\t%s$\tREDUCE i TO E\n",str3,str1);
+         }
+       else if(str3[z]=='E' && str3[z+1]=='+' && str3[z+2]=='E')
+         {
+           str3[z]='E';
+           str3[z+1]='\0';
+           printf("$%s\t%s$\tREDUCE E+E TO E\n",str3,str1);
+           i=i-2;
+         }
+       else if(str3[z]=='E' && str3[z+1]=='*' && str3[z+2]=='E')
+         {
+           str3[z]='E';
+           str3[z+1]='\0';
+           printf("$%s\t%s$\tREDUCE E*E TO E\n",str3,str1);
+           i=i-2;
+         }
+       else  if(str3[z]=='(' && str3[z+1]=='E' && str3[z+2]==')')
+         {
+           str3[z]='E';
+           str3[z+1]='\0';
+           printf("$%s\t%s$\tREDUCE (E) TO E\n",str3,str1);
+           i=i-2; 
+         }
+   	}
+   }
